@@ -16,6 +16,8 @@ def about():
     return render_template('about.html',active="active")
 @app.route('/upload', methods=['POST'])
 def upload():
+    if not os.path.isdir('.\\uploads'):
+        os.mkdir('.\\uploads')
     if request.method == 'POST':
         if 'file' not in request.files:
             return "<h1>NO file present</h1>"
