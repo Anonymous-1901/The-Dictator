@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Read Aloud | The Dictator{% endblock %}
+ {% block main %}
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+          </ul>
+
+          <!-- <ul class="nav navbar-nav navbar-right">
+        //     <li><a href="#" class="nav-link">Login</a></li>
+        //     <li><a href="#" class="nav-link">Sign Up</a></li>
+        //   </ul> -->
+        </div>
+      </div>
+      </nav>
+      <br>
+<h3 style="text-align:center">{{file_name}}</h3>
+<br>
+{{data}}
+{{src}}
+<iframe
+  src="{{src}}"
+  frameborder="1"
+  scrolling="auto"
+  height="100%"
+  width="100%"
+></iframe>  
+  Pitch
+  <input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
+  
+  Rate
+  <input type="range" min="0.1" max="10" value="1" id="rate" step="0.1" />
+  
+  Volume
+  <input type="range" min="0" max="1" value="1" step="0.1" id="volume" />
+  <select id="voices"></select>
+  <br>
+  <span id="pitch-label" class="ms-2" style="padding-left:90px"><b>1</b></span>
+  <span id="rate-label" class="ms-2"  style="padding-left:150px"><b>1</b></span>
+  <span id="volume-label" class="ms-2" style="padding-left:160px"><b>1</b></span>
+
+  <div class="mb-5">
+      <button id="start" class="btn btn-success mt-5 me-3">Start</button>
+      <button id="pause" class="btn btn-warning mt-5 me-3">Pause</button>
+      <button id="resume" class="btn btn-info mt-5 me-3">Resume</button>
+      <button id="cancel" class="btn btn-danger mt-5 me-3">Cancel</button>
+  </div>
+<script>
+
+let speech = new SpeechSynthesisUtterance();
+
+speech.lang = "en";
+
+let voices = []; // global array of available voices
+
+window.speechSynthesis.onvoiceschanged = () => {
+  // Get List of Voices
+  voices = window.speechSynthesis.getVoices();
+
+  speech.voice = voices[0];
+  let voiceSelect = document.querySelector("#voices");
+  voices.forEach((voice, i) => (voiceSelect.options[i] = new Option(voice.name, i)));
+};
+
+document.querySelector("#rate").addEventListener("input", () => {
+  const rate = document.querySelector("#rate").value;
+  speech.rate = rate;
+
+  document.querySelector("#rate-label").innerHTML = rate;
+});
+
+document.querySelector("#volume").addEventListener("input", () => {
+  
+  const volume = document.querySelector("#volume").value; 
+  speech.volume = volume;
+  document.querySelector("#volume-label").innerHTML = volume;
+});
+
+document.querySelector("#pitch").addEventListener("input", () => {
+  
+  const pitch = document.querySelector("#pitch").value;
+
+  // 
+  speech.pitch = pitch;
+
+  document.querySelector("#pitch-label").innerHTML = pitch;
+});
+
+document.querySelector("#voices").addEventListener("change", () => {
+  speech.voice = voices[document.querySelector("#voices").value];
+});
+
+document.querySelector("#start").addEventListener("click", () => {
+  speech.text = {{text|tojson}};
+  window.speechSynthesis.speak(speech);
+});
+
+document.querySelector("#pause").addEventListener("click", () => {
+  window.speechSynthesis.pause();
+});
+
+document.querySelector("#resume").addEventListener("click", () => {
+
+  window.speechSynthesis.resume();
+});
+
+document.querySelector("#cancel").addEventListener("click", () => {
+  window.speechSynthesis.cancel();
+});
+</script>
+<form action="/">
+  <button type="submit">Go back to home</button>
+</form>
+{% endblock %}

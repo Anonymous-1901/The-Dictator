@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+{% block title %}Home | The Dictator{% endblock %}
+{% block main %}
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+          </ul>
+          <!-- <ul class="nav navbar-nav navbar-right">
+        //     <li><a href="#" class="nav-link">Login</a></li>
+        //     <li><a href="#" class="nav-link">Sign Up</a></li>
+        //   </ul> -->
+        </div>
+      </div>
+      </nav>
+<br><br>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <h3>Add / Drag and drop a file </h3> <br>
+    <input class="form-control" type="file" name="file" />
+    <br />
+    <button type="submit" class="btn btn-success">Upload</button>
+  </div>
+</form>
+{% endblock %}
